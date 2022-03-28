@@ -1,0 +1,23 @@
+{
+  "name": "functionalprg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mod10.js",
+  "scripts": {
+    "start": "npm run start",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttnvmbr/functionalprg.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ttnvmbr/functionalprg/issues"
+  },
+  "homepage": "https://github.com/ttnvmbr/functionalprg#readme",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}

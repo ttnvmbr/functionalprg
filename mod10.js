@@ -1,6 +1,6 @@
 function mod10(text) {
   // remove spaces and split all characters
-  const noSpaces = text.replaceAll(" ", "");
+  const noSpaces = text.replace(/\s+/g, "");
   const splitted = [...noSpaces];
 
   // new array of ascii characters of the splitted characters
@@ -12,19 +12,29 @@ function mod10(text) {
   const finalSplit = splitNumbers(ascii);
 
   // add numbers till number of items in array is a multitude of 10
-  addNumbers(finalSplit);
+  const multitudeTen = addNumbers(finalSplit);
 
   // perform hashing calculation and turn into array of 10
-  twentyToTen(finalSplit);
+  const hashed = twentyToTen(multitudeTen);
 
   // turn into string
-  const finalString = finalSplit.join("");
+  const finalString = hashed.join("");
+
+  sha256(finalString).then((r) => {
+    console.log(r);
+  });
 
   // SHA256
-  return sha256(finalString);
+  // return sha256(finalString)
+  //   .then((res) => {
+  //     return res;
+  //   })
+  //   .catch((e) => {
+  //     return e;
+  //   });
 }
 
-console.log(mod10("mdsjjsjsajs sssj d"));
+// console.log(mod10("text"));
 
 function toAscii(input) {
   // if character is number return number
@@ -54,26 +64,29 @@ function addNumbers(input) {
   if (input.length % 10 === 0) return input;
   else {
     input.push(Math.floor(Math.random() * 10));
-    addNumbers(input);
+    return addNumbers(input);
   }
 }
 
 function twentyToTen(input) {
   // if array length is 10 return array
   // else calc new array and repeat
-  if ((input.length = 10)) return input;
-  else {
+  if (input.length == 10) {
+    console.log(input);
+    return input;
+  } else {
     // split input into 2 arrays of 10 and the leftovers
     const blockA = input.slice(0, 10);
     const blockB = input.slice(10, 20);
     const leftOvers = input.slice(20);
 
-    // multiply every number in array 1 with the numbers from array 2 of the same index
-    const blockC = blockA.map((a, index) => a * blockB[index]);
+    // add every number in array 1 to the numbers from array 2 of the same index % 10
+    const blockC = blockA.map((a, index) => (a + blockB[index]) % 10);
+
     // add the leftovers to the newly created array of 10
     const blockD = blockC.concat(leftOvers);
 
-    twentyToTen(blockD);
+    return twentyToTen(blockD);
   }
 }
 
