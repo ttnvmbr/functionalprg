@@ -20,7 +20,7 @@ function hashData(data) {
     data.blockchain.data[0].to +
     data.blockchain.data[0].amount +
     data.blockchain.data[0].timestamp;
-  const timeStamp = data.timestamp;
+  const timeStamp = data.blockchain.timestamp;
 
   const transactions2 =
     data.transactions[0].from +
@@ -29,15 +29,33 @@ function hashData(data) {
     data.transactions[0].timestamp;
 
   const BBB = hash + transactions + timeStamp + nonce;
-  console.log(mod10(BBB));
-  const BBBResult =
-    "caf9a0776c7a7a7febd3e04d62dc9e1cfb0d18ba4c325e3b58d8691ed1d30756";
-  let bbb = 0;
 
-  const CCC = BBBResult + transactions2 + bbb;
-  console.log(BBB, "space", CCC);
-  // mod10("test");
+  const BBBResult = mod10(BBB);
+
+  BBBResult.then((res) => {
+    findNonce(res, transactions2);
+  });
 }
+
+function findNonce(input, transactions) {
+  let finalHash = "";
+  let newNonce = 0;
+
+  while (!isHashValid(finalHash)) {
+    newNonce++;
+    const fullInput = input + transactions + newNonce;
+    mod10(fullInput).then((res) => {
+      console.log(res);
+      resolveAnswer(res);
+    });
+    // console.log(newNonce, "New Nonce");
+    // console.log(finalHash, "finalHash");
+  }
+
+  console.log(newNonce);
+}
+
+const isHashValid = (hash) => hash.startsWith("0000");
 
 const sendData = async () => {
   try {
